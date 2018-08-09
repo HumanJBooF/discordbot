@@ -1,0 +1,11 @@
+{
+    "name": "bison-bot",
+    "version": "1.0.0",
+    "description": "first bot",
+    "main": "bot.js",
+    "author": "joshua",
+    "dependencies": {
+        "discord.io": "github:woor/discord.io#gateway_v6",
+        "winston": "^3.0.0"
+    }
+}
