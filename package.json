@@ -1,11 +1,23 @@
 {
-    "name": "bison-bot",
-    "version": "1.0.0",
-    "description": "first bot",
-    "main": "bot.js",
-    "author": "joshua",
-    "dependencies": {
-        "discord.io": "github:woor/discord.io#gateway_v6",
-        "winston": "^3.0.0"
-    }
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "First bot",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HumanJBooF/discordbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HumanJBooF/discordbot/issues"
+  },
+  "homepage": "https://github.com/HumanJBooF/discordbot#readme",
+  "dependencies": {
+    "discord.js": "^11.4.0"
+  }
 }

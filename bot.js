@@ -1,45 +1,46 @@
-var Discord = require('discord.io');
-var logger = require('winston');
-var auth = require('./auth.json');
-// Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-    colorize: true
-});
-logger.level = 'debug';
-// Initialize Discord Bot
-var bot = new Discord.Client({
-    token: auth.token,
-    autorun: true
-});
-bot.on('ready', function (evt) {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
-});
-bot.on('message', function (user, userID, channelID, message, evt) {
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
-    if (message.substring(0, 1) == '!') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0];
+const Discord = require("discord.js");
+const client = new Discord.Client();
+const config = require("./config.json");
+const fs = require("fs");
+client.commands = new Discord.Collection();
 
-        args = args.splice(1);
-        switch (cmd) {
-            // !ping
-            case 'woof':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'WOOF WOOF WOOF!'
-                });
-                break;
-            case 'fro':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'Woof! Whats up froman!'
-                });
-                break;
 
-        }
+
+fs.readdir("./commands/", (err, files) => {
+
+    if (err) console.log(err);
+
+    let jsFile = files.filter(f => f.split(".").pop() === "js")
+    if (jsFile.length <= 0) {
+        console.log("Can't Find Commands!");
+        return;
     }
+
+    jsFile.forEach((f, i) => {
+        let props = require(`./commands/${f}`);
+        console.log(`${f} loaded!`)
+        client.commands.set(props.help.name, props)
+    });
+
 });
+
+
+client.on("ready", async () => {
+    console.log("I am ready!");
+    client.user.setActivity('Squirrels', { type: 'WATCHING' });
+});
+
+client.on("message", async (message) => {
+    if (!message.content.startsWith(config.prefix) || message.author.bot || message.channel.type === 'dm') return;
+
+    let prefix = config.prefix;
+    let messageArray = message.content.split(" ");
+    let cmd = messageArray[0];
+    let args = messageArray.slice(1);
+
+    let commandFile = client.commands.get(cmd.slice(prefix.length));
+    if (commandFile) commandFile.run(client, message, args);
+
+
+});
+client.login(config.token);
