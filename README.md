@@ -1,3 +1,3 @@
 # discordbot
 
-## working on a bot for the chat sevice discord
+## working on a bot for the chat service discord
