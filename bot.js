@@ -1,7 +1,10 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({ disableEveryone: true });
 const config = require("./config.json");
 const fs = require("fs");
+const ytdl = require("ytdl-core");
+var opusscript = require("opusscript");
+
 client.commands = new Discord.Collection();
 
 
@@ -34,7 +37,7 @@ client.on("message", async (message) => {
     if (!message.content.startsWith(config.prefix) || message.author.bot || message.channel.type === 'dm') return;
 
     let prefix = config.prefix;
-    let messageArray = message.content.split(" ");
+    let messageArray = message.content.toLowerCase().split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
 
